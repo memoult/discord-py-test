@@ -168,8 +168,24 @@ class Moderation(commands.Cog):
         embed.add_field(name='!unmute', value='Размутить пользователя', inline=False)
         embed.set_footer(text='Разработчик - Ходор')
         await ctx.send(embed=embed)
+    
+    @commands.command()
+    async def sozd_report(self, ctx):
+        embed = discord.Embed(title='Report Menu')
+        embed.add_field(name='Чтобы создать репорт напишите: ', value='!report', inline=False)
+        embed.add_field(name='После этого с вами свяжутся для помощи', value='123', inline=False)
+        embed.set_footer(text='Xodor Developer 2022')
+        await ctx.send(embed=embed)
 
-
+    @commands.command()
+    async def report(str, self, ctx, member: discord.Member, message: discord.Message):
+        ctx.discord.on_guild_channel_create(name='ticket-0'(+1))
+        embed = discord.Embed(title='Report Menu')
+        embed.set_author(name=ctx.message.guild.name, icon_url=ctx.message.guild.icon_url)
+        await ctx.send(f'Пришел репорт от {member.mention} {980547892181864619}!')
+        embed.add_field(name='Причина репорта', value=f'{message.content}', inline=False)
+        embed.set_footer(text='Xodor Developer 2022')
+        await ctx.send(embed=embed)
     
 def setup(bot):
     bot.add_cog(Moderation(bot))
