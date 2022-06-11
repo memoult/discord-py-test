@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 import asyncio
@@ -8,6 +7,8 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import os
 from func import *
+from token import TOKEN
+
 
 bot = commands.Bot(command_prefix="!", help_command=None, intents=discord.Intents.all())
 
@@ -32,35 +33,6 @@ async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
     await ctx.send(f'{extension} loaded')
 
-@bot.command(pass_context=True)
-async def reload(ctx, cog=None):
-    if not int(ctx.author.id) in bot.devs:
-        print("Перезапустить Cog не получилось!")
-        embed=discord.Embed(title="Error", description=f"Вы не разработчик\nПо этому вы не можете перезапустить Cog", color=bot.red)
-        msg = await ctx.send(embed=embed)
-        await asyncio.sleep(5)
-        await msg.delete()
-    else:
-        if not cog:
-            return
-        else:
-            try:
-                print('Перезапуск Cog')
-                bot.reload_extension(cog)
-                await ctx.message.add_reaction('✅')
-                msg = await ctx.send(f'Перезапуск **{cog}**')
-                await asyncio.sleep(20)
-                await msg.delete()
-            except Exception as e:
-                await ctx.message.add_reaction('❌')
-                msg = await ctx.send(f'Error **{cog}**!\n```{e}```')
-                dev_logs = bot.get_channel(872925132786655342)
-                mod_logs = bot.get_channel(872925132786655342)
-                await asyncio.sleep(20)
-                await msg.delete()
-                await dev_logs.send(f'Error **{cog}**!\n```{e}```')
-                await mod_logs.send(f'Error **{cog}**!\n```{e}```')
-
 @bot.command()
 async def unload(ctx, extension):
     extension = extension.lower()
@@ -72,6 +44,10 @@ for filename in os.listdir("./cogs"):
     if filename.endswith(".py") and not filename.startswith("_"):
         bot.load_extension(f"cogs.{filename[:-3]}")
 
+<<<<<<< Updated upstream
 
 
 bot.run('TOKEN')
+=======
+bot.run(TOKEN)
+>>>>>>> Stashed changes

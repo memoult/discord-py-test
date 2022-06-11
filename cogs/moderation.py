@@ -74,7 +74,7 @@ class Moderation(commands.Cog):
                 write_json("jsons/mutes.json", mutes)
                 await member.add_roles(role)
                 await member.move_to(channel=None)
-                embed = discord.Embed(title=f'Мут {member}', inline=False)
+                embed = discord.Embed(title=f'Mute Menu', inline=False)
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name='НикНейм', value=member.mention, inline=False)
                 embed.add_field(name='Модератор: ', value=ctx.author.mention, inline=False)
@@ -112,13 +112,40 @@ class Moderation(commands.Cog):
             await member.ban(reason=reason)
             embed = discord.Embed(title='Бан пользователя')
             embed.set_thumbnail(url=member.avatar_url)
-            embed.add_field(name='Забанен: ', value=member.display_name, inline=False)
+            embed.add_field(name='Забанен: ', value=member.mention, inline=False)
             embed.add_field(name='Модератором: ', value=ctx.author.mention, inline=False)
             embed.add_field(name='Причина', value=reason, inline=False)
             embed.set_footer(text='Разработчик - Xodor')
             await ctx.send(embed=embed)
         else:
             await ctx.send('Вы не можете забанить самого себя!', delete_after=10)
+
+    @commands.command()
+    @commands.has_permissions(kick_members=True)
+    @commands.guild_only()
+    async def kick(self, ctx, member: discord.Member, *, reason='не указана'):
+        if member != ctx.author:
+            await member.kick(reason=reason)
+            embed = discord.Embed(title='Kick Menu')
+            embed.set_thumbnail(url=member.avatar_url)
+            embed.add_field(name='Кикнут: ', value=member.mention, inline=False)
+            embed.add_field(name='Модератором: ', value=ctx.author.mention, inline=False)
+            embed.add_field(name='Причина: ', value=reason, inline=False)
+            embed.set_footer(text='Разработчик - Xodor')
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send('Вы не можете кикнуть самого себя!', delete_after=10)
+
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.message.delete()
+            await ctx.send(embed=discord.Embed(description='У вас не достаточно прав для того что использовать данную команду!'), delete_after=5)
+            return
+        if isinstance(error, commands.MemberNotFound):
+            await ctx.message.delete()
+            await ctx.send(embed=discord.Embed(description='Пользователь не был найден'), delete_after=5)
+            return
 
 
     @ban.error
