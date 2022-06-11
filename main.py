@@ -74,4 +74,4 @@ for filename in os.listdir("./cogs"):
 
 
 
-bot.run('ODcyOTI1MjQzNjM3OTE1Njg5.Gl8MOx.RXhcmMnTzt-_B4vt31iAhGzyMoKBfCLp7i1BK0')
+bot.run('TOKEN')
